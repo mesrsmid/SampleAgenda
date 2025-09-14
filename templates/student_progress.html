@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Student Progress</h1>
-<form method="get">
-  <input type="number" name="student_id" placeholder="Student ID" value="{{ student_id or '' }}" required>
-  <input type="number" name="program_id" placeholder="Program ID" value="{{ program_id or '' }}" required>
-  <button type="submit">Check</button>
+<form method="get" class="row g-3">
+  <div class="col-md">
+    <input type="number" name="student_id" placeholder="Student ID" value="{{ student_id or '' }}" required class="form-control">
+  </div>
+  <div class="col-md">
+    <input type="number" name="program_id" placeholder="Program ID" value="{{ program_id or '' }}" required class="form-control">
+  </div>
+  <div class="col-md-auto">
+    <button type="submit" class="btn btn-primary">Check</button>
+  </div>
 </form>
 
 {% if passed is defined %}
