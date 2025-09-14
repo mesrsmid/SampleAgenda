@@ -4,8 +4,10 @@ from pathlib import Path
 DB_NAME = 'school.db'
 
 
-def get_connection(db_path: str | Path = DB_NAME) -> sqlite3.Connection:
+def get_connection(db_path: str | Path | None = None) -> sqlite3.Connection:
     """Return a SQLite connection with Row factory."""
+    if db_path is None:
+        db_path = DB_NAME
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn

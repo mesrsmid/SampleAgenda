@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Courses</h1>
+<ul>
+{% for c in courses %}
+  <li>{{ c['name'] }} ({{ c['credits'] }} credits) - {{ c['teacher_name'] or 'No teacher' }}</li>
+{% endfor %}
+</ul>
+
+<h2>Add Course</h2>
+<form action="/courses/add" method="post">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="number" name="credits" placeholder="Credits" required>
+  <input type="number" name="teacher_id" placeholder="Teacher ID">
+  <button type="submit">Add</button>
+</form>
+
+<h2>Enroll Student</h2>
+<form action="/enroll" method="post">
+  <input type="number" name="student_id" placeholder="Student ID" required>
+  <input type="number" name="course_id" placeholder="Course ID" required>
+  <input type="text" name="semester" placeholder="Semester" required>
+  <button type="submit">Enroll</button>
+</form>
+{% endblock %}
