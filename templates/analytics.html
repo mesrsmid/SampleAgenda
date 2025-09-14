@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Analytics</h1>
+<canvas id="coursesChart" width="400" height="200"></canvas>
+<canvas id="teachersChart" width="400" height="200"></canvas>
+<script>
+async function loadCharts() {
+  const coursesResp = await fetch('/api/analytics/popular-courses');
+  const coursesData = await coursesResp.json();
+  const courseLabels = coursesData.map(c => c.name);
+  const courseCounts = coursesData.map(c => c.count);
+
+  new Chart(document.getElementById('coursesChart'), {
+    type: 'bar',
+    data: {
+      labels: courseLabels,
+      datasets: [{
+        label: 'Popular Courses',
+        data: courseCounts,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    }
+  });
+
+  const teachersResp = await fetch('/api/analytics/popular-teachers');
+  const teachersData = await teachersResp.json();
+  const teacherLabels = teachersData.map(t => t.name);
+  const teacherCounts = teachersData.map(t => t.count);
+
+  new Chart(document.getElementById('teachersChart'), {
+    type: 'bar',
+    data: {
+      labels: teacherLabels,
+      datasets: [{
+        label: 'Popular Teachers',
+        data: teacherCounts,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    }
+  });
+}
+loadCharts();
+</script>
+{% endblock %}

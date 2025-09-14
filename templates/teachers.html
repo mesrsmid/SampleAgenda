@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Teachers</h1>
+<ul>
+{% for t in teachers %}
+  <li>{{ t['first_name'] }} {{ t['last_name'] }} ({{ t['email'] or '' }})</li>
+{% endfor %}
+</ul>
+{% endblock %}
