@@ -92,7 +92,6 @@ async def post_course_grade(
         f"/teachers/{teacher_id}/courses/{course_id}/grades", status_code=303
     )
 
-
 @app.get("/students")
 async def get_students(request: Request):
     students = svc.list_students()
