@@ -18,18 +18,30 @@
     <button type="submit" class="btn btn-primary">Add</button>
   </div>
 </form>
-<ul class="list-group mt-3">
-{% for s in students %}
-  <li class="list-group-item">
-    {{ s['first_name'] }} {{ s['last_name'] }} ({{ s['student_number'] }})
-    <a href="/students/{{ s['id'] }}/edit" class="btn btn-secondary btn-sm ms-2">Edit</a>
-    <form method="post" action="/students/{{ s['id'] }}/delete" class="d-inline">
-      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-    </form>
-    <a href="/students/{{ s['id'] }}/enrollments" class="btn btn-link btn-sm">Enrollments</a>
-    <a href="/progress?student_id={{ s['id'] }}" class="btn btn-link btn-sm">Progress</a>
-    <a href="/students/{{ s['id'] }}/grades" class="btn btn-link btn-sm">Grades</a>
-  </li>
-{% endfor %}
-</ul>
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for s in students %}
+    <tr>
+      <td>{{ s['first_name'] }} {{ s['last_name'] }} ({{ s['student_number'] }})</td>
+      <td>{{ s['email'] }}</td>
+      <td>
+        <a href="/students/{{ s['id'] }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+        <form method="post" action="/students/{{ s['id'] }}/delete" class="d-inline">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        <a href="/students/{{ s['id'] }}/enrollments" class="btn btn-link btn-sm">Enrollments</a>
+        <a href="/progress?student_id={{ s['id'] }}" class="btn btn-link btn-sm">Progress</a>
+        <a href="/students/{{ s['id'] }}/grades" class="btn btn-link btn-sm">Grades</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
