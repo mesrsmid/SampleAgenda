@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Students</h1>
+<form method="post" action="/students/add">
+  <input name="first_name" placeholder="First name">
+  <input name="last_name" placeholder="Last name">
+  <input name="student_number" placeholder="Student number">
+  <input name="email" placeholder="Email">
+  <button type="submit">Add</button>
+</form>
+<ul>
+{% for s in students %}
+  <li>
+    {{ s['first_name'] }} {{ s['last_name'] }} ({{ s['student_number'] }})
+    <a href="/students/{{ s['id'] }}/edit">Edit</a>
+    <form method="post" action="/students/{{ s['id'] }}/delete" style="display:inline">
+      <button type="submit">Delete</button>
+    </form>
+    <a href="/students/{{ s['id'] }}/enrollments">Enrollments</a>
+    <a href="/progress?student_id={{ s['id'] }}">Progress</a>
+    <a href="/students/{{ s['id'] }}/grades">Grades</a>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -166,6 +166,65 @@ def list_students() -> List[sqlite3.Row]:
     return cur.fetchall()
 
 
+def get_student(student_id: int) -> sqlite3.Row | None:
+    conn = get_connection()
+    cur = conn.execute("SELECT * FROM student WHERE id = ?", (student_id,))
+    return cur.fetchone()
+
+
+def update_student(
+    student_id: int,
+    first_name: str,
+    last_name: str,
+    student_number: str,
+    email: str | None,
+) -> None:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE student SET first_name = ?, last_name = ?, student_number = ?, email = ? WHERE id = ?",
+        (first_name, last_name, student_number, email, student_id),
+    )
+    conn.commit()
+
+
+def delete_student(student_id: int) -> None:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM student WHERE id = ?", (student_id,))
+    conn.commit()
+
+
+def get_student_enrollments(student_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        """
+        SELECT e.*, c.name AS course_name
+        FROM enrollment e
+        JOIN course c ON e.course_id = c.id
+        WHERE e.student_id = ?
+        ORDER BY c.name
+        """,
+        (student_id,),
+    )
+    return cur.fetchall()
+
+
+def get_student_grades(student_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        """
+        SELECT e.*, c.name AS course_name
+        FROM enrollment e
+        JOIN course c ON e.course_id = c.id
+        WHERE e.student_id = ? AND e.grade IS NOT NULL
+        ORDER BY c.name
+        """,
+        (student_id,),
+    )
+    return cur.fetchall()
+
+
 def assign_course_to_program(program_id: int, course_id: int) -> None:
     conn = get_connection()
     cur = conn.cursor()

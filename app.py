@@ -18,7 +18,6 @@ async def get_teachers(request: Request):
     return templates.TemplateResponse("teachers.html", {"request": request, "teachers": teachers})
 
 
-
 @app.post("/teachers/add")
 async def add_teacher(
     first_name: str = Form(...),
@@ -92,6 +91,63 @@ async def post_course_grade(
     return RedirectResponse(
         f"/teachers/{teacher_id}/courses/{course_id}/grades", status_code=303
     )
+
+@app.get("/students")
+async def get_students(request: Request):
+    students = svc.list_students()
+    return templates.TemplateResponse("students.html", {"request": request, "students": students})
+
+
+@app.post("/students/add")
+async def add_student(
+    first_name: str = Form(...),
+    last_name: str = Form(...),
+    student_number: str = Form(...),
+    email: str | None = Form(None),
+):
+    svc.add_student(first_name, last_name, student_number, email)
+    return RedirectResponse("/students", status_code=303)
+
+
+@app.get("/students/{student_id}/edit")
+async def edit_student_form(request: Request, student_id: int):
+    student = svc.get_student(student_id)
+    return templates.TemplateResponse("student_edit.html", {"request": request, "student": student})
+
+
+@app.post("/students/{student_id}/edit")
+async def edit_student(
+    student_id: int,
+    first_name: str = Form(...),
+    last_name: str = Form(...),
+    student_number: str = Form(...),
+    email: str | None = Form(None),
+):
+    svc.update_student(student_id, first_name, last_name, student_number, email)
+    return RedirectResponse("/students", status_code=303)
+
+
+@app.post("/students/{student_id}/delete")
+async def delete_student(student_id: int):
+    svc.delete_student(student_id)
+    return RedirectResponse("/students", status_code=303)
+
+
+@app.get("/students/{student_id}/enrollments")
+async def student_enrollments(request: Request, student_id: int):
+    student = svc.get_student(student_id)
+    enrollments = svc.get_student_enrollments(student_id)
+    context = {"request": request, "student": student, "enrollments": enrollments}
+    return templates.TemplateResponse("student_enrollments.html", context)
+
+
+@app.get("/students/{student_id}/grades")
+async def student_grades(request: Request, student_id: int):
+    student = svc.get_student(student_id)
+    grades = svc.get_student_grades(student_id)
+    context = {"request": request, "student": student, "grades": grades}
+    return templates.TemplateResponse("student_grades.html", context)
+
 
 @app.get("/courses")
 async def get_courses(request: Request):
