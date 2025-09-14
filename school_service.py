@@ -22,12 +22,14 @@ def add_teacher(first_name: str, last_name: str, email: str | None = None) -> in
 
 def list_teachers() -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute("SELECT * FROM teacher ORDER BY last_name, first_name")
     return cur.fetchall()
 
 
 def get_teacher(teacher_id: int) -> sqlite3.Row | None:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute("SELECT * FROM teacher WHERE id = ?", (teacher_id,))
     return cur.fetchone()
 
@@ -51,6 +53,7 @@ def delete_teacher(teacher_id: int) -> None:
 
 def get_teacher_courses(teacher_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         "SELECT * FROM course WHERE teacher_id = ? ORDER BY name",
         (teacher_id,),
@@ -60,6 +63,7 @@ def get_teacher_courses(teacher_id: int) -> List[sqlite3.Row]:
 
 def get_teacher_students(teacher_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT DISTINCT s.*
@@ -76,6 +80,7 @@ def get_teacher_students(teacher_id: int) -> List[sqlite3.Row]:
 
 def get_teacher_evaluations(teacher_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT s.first_name || ' ' || s.last_name AS student_name,
@@ -94,6 +99,7 @@ def get_teacher_evaluations(teacher_id: int) -> List[sqlite3.Row]:
 
 def get_enrollments_for_course(course_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT e.id, s.first_name || ' ' || s.last_name AS student_name,
@@ -122,6 +128,7 @@ def add_course(name: str, credits: int, teacher_id: int | None) -> int:
 
 def list_courses() -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         "SELECT c.*, t.first_name || ' ' || t.last_name AS teacher_name "
         "FROM course c LEFT JOIN teacher t ON c.teacher_id = t.id"
@@ -144,6 +151,7 @@ def add_program(name: str, description: str | None = None) -> int:
 
 def list_programs() -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute("SELECT * FROM program ORDER BY name")
     return cur.fetchall()
 
@@ -162,12 +170,14 @@ def add_student(first_name: str, last_name: str, student_number: str, email: str
 
 def list_students() -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute("SELECT * FROM student ORDER BY last_name, first_name")
     return cur.fetchall()
 
 
 def get_student(student_id: int) -> sqlite3.Row | None:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute("SELECT * FROM student WHERE id = ?", (student_id,))
     return cur.fetchone()
 
@@ -197,6 +207,7 @@ def delete_student(student_id: int) -> None:
 
 def get_student_enrollments(student_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT e.*, c.name AS course_name
@@ -212,6 +223,7 @@ def get_student_enrollments(student_id: int) -> List[sqlite3.Row]:
 
 def get_student_grades(student_id: int) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT e.*, c.name AS course_name
@@ -271,6 +283,7 @@ def record_grade(enrollment_id: int, grade: str, status: str) -> None:
 def get_student_progress(student_id: int, program_id: int) -> Tuple[int, int, int]:
     """Return (passed, remaining, failed_attempts)."""
     conn = get_connection()
+    init_db(conn)
     cur = conn.cursor()
 
     # total courses in program
@@ -308,6 +321,7 @@ def get_student_progress(student_id: int, program_id: int) -> Tuple[int, int, in
 
 def get_most_popular_courses(limit: int = 5) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT c.id, c.name, COUNT(e.id) AS cnt
@@ -323,6 +337,7 @@ def get_most_popular_courses(limit: int = 5) -> List[sqlite3.Row]:
 
 def get_most_popular_teachers(limit: int = 5) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT t.id, t.first_name || ' ' || t.last_name AS name, COUNT(e.id) AS cnt
@@ -340,6 +355,7 @@ def get_most_popular_teachers(limit: int = 5) -> List[sqlite3.Row]:
 
 def get_best_students(limit: int = 5) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT s.id, s.first_name || ' ' || s.last_name AS name,
@@ -360,6 +376,7 @@ def get_best_students(limit: int = 5) -> List[sqlite3.Row]:
 
 def get_at_risk_students(limit: int = 5) -> List[sqlite3.Row]:
     conn = get_connection()
+    init_db(conn)
     cur = conn.execute(
         """
         SELECT s.id, s.first_name || ' ' || s.last_name AS name,
