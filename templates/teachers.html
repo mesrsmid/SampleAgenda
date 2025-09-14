@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Teachers</h1>
-<form method="post" action="/teachers/add">
-  <input name="first_name" placeholder="First name">
-  <input name="last_name" placeholder="Last name">
-  <input name="email" placeholder="Email">
-  <button type="submit">Add</button>
+<form method="post" action="/teachers/add" class="row g-3">
+  <div class="col-md">
+    <input name="first_name" placeholder="First name" class="form-control">
+  </div>
+  <div class="col-md">
+    <input name="last_name" placeholder="Last name" class="form-control">
+  </div>
+  <div class="col-md">
+    <input name="email" placeholder="Email" class="form-control">
+  </div>
+  <div class="col-md-auto">
+    <button type="submit" class="btn btn-primary">Add</button>
+  </div>
 </form>
-<ul>
+<ul class="list-group mt-3">
 {% for t in teachers %}
-  <li>
+  <li class="list-group-item">
     <a href="/teachers/{{ t['id'] }}">{{ t['first_name'] }} {{ t['last_name'] }}</a>
     ({{ t['email'] or '' }})
-    <a href="/teachers/{{ t['id'] }}/edit">Edit</a>
-    <form method="post" action="/teachers/{{ t['id'] }}/delete" style="display:inline">
-      <button type="submit">Delete</button>
+    <a href="/teachers/{{ t['id'] }}/edit" class="btn btn-secondary btn-sm ms-2">Edit</a>
+    <form method="post" action="/teachers/{{ t['id'] }}/delete" class="d-inline">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
     </form>
   </li>
 {% endfor %}
