@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Teachers</h1>
+<form method="post" action="/teachers/add">
+  <input name="first_name" placeholder="First name">
+  <input name="last_name" placeholder="Last name">
+  <input name="email" placeholder="Email">
+  <button type="submit">Add</button>
+</form>
+<ul>
+{% for t in teachers %}
+  <li>
+    <a href="/teachers/{{ t['id'] }}">{{ t['first_name'] }} {{ t['last_name'] }}</a>
+    ({{ t['email'] or '' }})
+    <a href="/teachers/{{ t['id'] }}/edit">Edit</a>
+    <form method="post" action="/teachers/{{ t['id'] }}/delete" style="display:inline">
+      <button type="submit">Delete</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

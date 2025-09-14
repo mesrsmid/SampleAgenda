@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Student Progress</h1>
+<form method="get">
+  <input type="number" name="student_id" placeholder="Student ID" value="{{ student_id or '' }}" required>
+  <input type="number" name="program_id" placeholder="Program ID" value="{{ program_id or '' }}" required>
+  <button type="submit">Check</button>
+</form>
+
+{% if passed is defined %}
+<ul>
+  <li>Passed: {{ passed }}</li>
+  <li>Remaining: {{ remaining }}</li>
+  <li>Failed Attempts: {{ failed }}</li>
+</ul>
+{% endif %}
+{% endblock %}
