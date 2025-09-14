@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ course['name'] }} - Grades</h1>
+<ul>
+{% for e in enrollments %}
+  <li>
+    {{ e['student_name'] }}
+    <form method="post" style="display:inline">
+      <input type="hidden" name="enrollment_id" value="{{ e['id'] }}">
+      <input name="grade" value="{{ e['grade'] or '' }}">
+      <button type="submit">Save</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}
