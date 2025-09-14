@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Edit Teacher</h1>
+<form method="post">
+  <input name="first_name" value="{{ teacher['first_name'] }}">
+  <input name="last_name" value="{{ teacher['last_name'] }}">
+  <input name="email" value="{{ teacher['email'] or '' }}">
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

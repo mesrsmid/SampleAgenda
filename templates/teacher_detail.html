@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ teacher['first_name'] }} {{ teacher['last_name'] }}</h1>
+<h2>Courses</h2>
+<ul>
+{% for c in courses %}
+  <li><a href="/teachers/{{ teacher['id'] }}/courses/{{ c['id'] }}/grades">{{ c['name'] }}</a></li>
+{% endfor %}
+</ul>
+<h2>Students</h2>
+<ul>
+{% for s in students %}
+  <li>{{ s['first_name'] }} {{ s['last_name'] }}</li>
+{% endfor %}
+</ul>
+<h2>Evaluations</h2>
+<ul>
+{% for e in evaluations %}
+  <li>{{ e['course_name'] }} - {{ e['student_name'] }}: {{ e['grade'] }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
