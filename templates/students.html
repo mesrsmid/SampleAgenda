@@ -1,23 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Students</h1>
-<form method="post" action="/students/add" class="row g-3">
-  <div class="col-md">
-    <input name="first_name" placeholder="First name" class="form-control">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add</button>
+
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/students/add">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <input name="first_name" placeholder="First name" class="form-control">
+          </div>
+          <div class="mb-3">
+            <input name="last_name" placeholder="Last name" class="form-control">
+          </div>
+          <div class="mb-3">
+            <input name="student_number" placeholder="Student number" class="form-control">
+          </div>
+          <div class="mb-3">
+            <input name="email" placeholder="Email" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="col-md">
-    <input name="last_name" placeholder="Last name" class="form-control">
-  </div>
-  <div class="col-md">
-    <input name="student_number" placeholder="Student number" class="form-control">
-  </div>
-  <div class="col-md">
-    <input name="email" placeholder="Email" class="form-control">
-  </div>
-  <div class="col-md-auto">
-    <button type="submit" class="btn btn-primary">Add</button>
-  </div>
-</form>
+</div>
+
 <table class="table table-striped mt-3">
   <thead>
     <tr>
@@ -32,10 +47,39 @@
       <td>{{ s['first_name'] }} {{ s['last_name'] }} ({{ s['student_number'] }})</td>
       <td>{{ s['email'] }}</td>
       <td>
-        <a href="/students/{{ s['id'] }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editStudentModal-{{ s['id'] }}">Edit</button>
         <form method="post" action="/students/{{ s['id'] }}/delete" class="d-inline">
           <button type="submit" class="btn btn-danger btn-sm">Delete</button>
         </form>
+        <div class="modal fade" id="editStudentModal-{{ s['id'] }}" tabindex="-1" aria-labelledby="editStudentModalLabel-{{ s['id'] }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="/students/{{ s['id'] }}/edit">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editStudentModalLabel-{{ s['id'] }}">Edit Student</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <input name="first_name" value="{{ s['first_name'] }}" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <input name="last_name" value="{{ s['last_name'] }}" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <input name="student_number" value="{{ s['student_number'] }}" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <input name="email" value="{{ s['email'] }}" class="form-control">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <a href="/students/{{ s['id'] }}/enrollments" class="btn btn-link btn-sm">Enrollments</a>
         <a href="/progress?student_id={{ s['id'] }}" class="btn btn-link btn-sm">Progress</a>
         <a href="/students/{{ s['id'] }}/grades" class="btn btn-link btn-sm">Grades</a>
