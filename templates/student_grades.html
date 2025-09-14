@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ student['first_name'] }} {{ student['last_name'] }} - Grades</h1>
+<ul>
+{% for g in grades %}
+  <li>{{ g['course_name'] }}: {{ g['grade'] }} ({{ g['semester'] }})</li>
+{% endfor %}
+</ul>
+{% endblock %}
