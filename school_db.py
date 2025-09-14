@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
 
 DB_NAME = 'school.db'
@@ -11,6 +12,16 @@ def get_connection(db_path: str | Path | None = None) -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+@contextmanager
+def db_connection(db_path: str | Path | None = None) -> sqlite3.Connection:
+    """Yield a connection that is closed automatically."""
+    conn = get_connection(db_path)
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
 def init_db(conn: sqlite3.Connection) -> None:
