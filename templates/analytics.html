@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Analytics</h1>
-<canvas id="coursesChart" width="400" height="200"></canvas>
-<canvas id="teachersChart" width="400" height="200"></canvas>
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header">Popular Courses</div>
+      <div class="card-body">
+        <canvas id="coursesChart"></canvas>
+      </div>
+      <div class="card-footer text-muted">
+        Number of enrollments per course.
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-header">Popular Teachers</div>
+      <div class="card-body">
+        <canvas id="teachersChart"></canvas>
+      </div>
+      <div class="card-footer text-muted">
+        Number of students per teacher.
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 async function loadCharts() {
   const coursesResp = await fetch('/api/analytics/popular-courses');
