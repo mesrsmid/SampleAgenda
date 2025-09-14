@@ -177,7 +177,6 @@ async def enroll(student_id: int = Form(...), course_id: int = Form(...), semest
 
 @app.get("/progress")
 async def progress(request: Request, student_id: int | None = None, program_id: int | None = None):
-
     students = svc.list_students()
     programs = svc.list_programs()
     context = {

@@ -3,25 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <title>{{ title or 'Sample Agenda' }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+        form { margin: 1em 0; }
+        label { display: block; margin-top: 0.5em; }
+        input, select, button { padding: 0.4em; }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/teachers">Teachers</a></li>
-            <li class="nav-item"><a class="nav-link" href="/students">Students</a></li>
-            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
-            <li class="nav-item"><a class="nav-link" href="/progress">Student Progress</a></li>
-            <li class="nav-item"><a class="nav-link" href="/analytics">Analytics</a></li>
-        </ul>
-    </div>
+<nav>
+    <a href="/teachers">Teachers</a> |
+    <a href="/students">Students</a> |
+    <a href="/courses">Courses</a> |
+    <a href="/progress">Student Progress</a> |
+    <a href="/analytics">Analytics</a>
 </nav>
-<div class="container mt-4">
-    {% block content %}{% endblock %}
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+<hr>
+{% block content %}{% endblock %}
+<script>
+
 function filterSelect(inputId, selectId) {
     const filter = document.getElementById(inputId).value.toLowerCase();
     const select = document.getElementById(selectId);
