@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Teachers</h1>
+
 <form method="post" action="/teachers/add">
   <input name="first_name" placeholder="First name">
   <input name="last_name" placeholder="Last name">
@@ -17,6 +18,11 @@
       <button type="submit">Delete</button>
     </form>
   </li>
+=======
+<ul>
+{% for t in teachers %}
+  <li>{{ t['first_name'] }} {{ t['last_name'] }} ({{ t['email'] or '' }})</li>
+
 {% endfor %}
 </ul>
 {% endblock %}

@@ -18,6 +18,7 @@ async def get_teachers(request: Request):
     return templates.TemplateResponse("teachers.html", {"request": request, "teachers": teachers})
 
 
+
 @app.post("/teachers/add")
 async def add_teacher(
     first_name: str = Form(...),
@@ -91,7 +92,6 @@ async def post_course_grade(
     return RedirectResponse(
         f"/teachers/{teacher_id}/courses/{course_id}/grades", status_code=303
     )
-
 
 @app.get("/courses")
 async def get_courses(request: Request):
