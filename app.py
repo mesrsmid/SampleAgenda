@@ -92,7 +92,6 @@ async def post_course_grade(
         f"/teachers/{teacher_id}/courses/{course_id}/grades", status_code=303
     )
 
-
 @app.get("/students")
 async def get_students(request: Request):
     students = svc.list_students()
@@ -178,6 +177,7 @@ async def enroll(student_id: int = Form(...), course_id: int = Form(...), semest
 
 @app.get("/progress")
 async def progress(request: Request, student_id: int | None = None, program_id: int | None = None):
+
     students = svc.list_students()
     programs = svc.list_programs()
     context = {

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ course['name'] }} - Grades</h1>
-<ul>
+<ul class="list-group">
 {% for e in enrollments %}
-  <li>
+  <li class="list-group-item">
     {{ e['student_name'] }}
-    <form method="post" style="display:inline">
+    <form method="post" class="d-inline-flex align-items-center gap-2">
       <input type="hidden" name="enrollment_id" value="{{ e['id'] }}">
-      <input name="grade" value="{{ e['grade'] or '' }}">
-      <button type="submit">Save</button>
+      <input name="grade" value="{{ e['grade'] or '' }}" class="form-control">
+      <button type="submit" class="btn btn-primary btn-sm">Save</button>
     </form>
   </li>
 {% endfor %}
