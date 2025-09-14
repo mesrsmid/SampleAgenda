@@ -26,6 +26,88 @@ def list_teachers() -> List[sqlite3.Row]:
     return cur.fetchall()
 
 
+def get_teacher(teacher_id: int) -> sqlite3.Row | None:
+    conn = get_connection()
+    cur = conn.execute("SELECT * FROM teacher WHERE id = ?", (teacher_id,))
+    return cur.fetchone()
+
+
+def update_teacher(teacher_id: int, first_name: str, last_name: str, email: str | None) -> None:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE teacher SET first_name = ?, last_name = ?, email = ? WHERE id = ?",
+        (first_name, last_name, email, teacher_id),
+    )
+    conn.commit()
+
+
+def delete_teacher(teacher_id: int) -> None:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM teacher WHERE id = ?", (teacher_id,))
+    conn.commit()
+
+
+def get_teacher_courses(teacher_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        "SELECT * FROM course WHERE teacher_id = ? ORDER BY name",
+        (teacher_id,),
+    )
+    return cur.fetchall()
+
+
+def get_teacher_students(teacher_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        """
+        SELECT DISTINCT s.*
+        FROM student s
+        JOIN enrollment e ON s.id = e.student_id
+        JOIN course c ON e.course_id = c.id
+        WHERE c.teacher_id = ?
+        ORDER BY s.last_name, s.first_name
+        """,
+        (teacher_id,),
+    )
+    return cur.fetchall()
+
+
+def get_teacher_evaluations(teacher_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        """
+        SELECT s.first_name || ' ' || s.last_name AS student_name,
+               c.name AS course_name,
+               e.grade
+        FROM enrollment e
+        JOIN student s ON e.student_id = s.id
+        JOIN course c ON e.course_id = c.id
+        WHERE c.teacher_id = ? AND e.grade IS NOT NULL
+        ORDER BY c.name, student_name
+        """,
+        (teacher_id,),
+    )
+    return cur.fetchall()
+
+
+def get_enrollments_for_course(course_id: int) -> List[sqlite3.Row]:
+    conn = get_connection()
+    cur = conn.execute(
+        """
+        SELECT e.id, s.first_name || ' ' || s.last_name AS student_name,
+               e.grade, e.status
+        FROM enrollment e
+        JOIN student s ON e.student_id = s.id
+        WHERE e.course_id = ?
+        ORDER BY student_name
+        """,
+        (course_id,),
+    )
+    return cur.fetchall()
+
+
 def add_course(name: str, credits: int, teacher_id: int | None) -> int:
     conn = get_connection()
     init_db(conn)
