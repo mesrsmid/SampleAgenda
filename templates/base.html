@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{{ title or 'Sample Agenda' }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+        form { margin: 1em 0; }
+        label { display: block; margin-top: 0.5em; }
+        input, select, button { padding: 0.4em; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/teachers">Teachers</a> |
+    <a href="/students">Students</a> |
+    <a href="/courses">Courses</a> |
+    <a href="/progress">Student Progress</a> |
+    <a href="/analytics">Analytics</a>
+</nav>
+<hr>
+{% block content %}{% endblock %}
+<script>
+function filterSelect(inputId, selectId) {
+    const filter = document.getElementById(inputId).value.toLowerCase();
+    const select = document.getElementById(selectId);
+    for (const option of select.options) {
+        option.hidden = filter && !option.text.toLowerCase().startsWith(filter);
+    }
+}
+</script>
+</body>
+</html>
