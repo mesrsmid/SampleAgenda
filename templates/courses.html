@@ -1,41 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Courses</h1>
-<ul class="list-group">
+<ul>
 {% for c in courses %}
-  <li class="list-group-item">{{ c['name'] }} ({{ c['credits'] }} credits) - {{ c['teacher_name'] or 'No teacher' }}</li>
+  <li>{{ c['name'] }} ({{ c['credits'] }} credits) - {{ c['teacher_name'] or 'No teacher' }}</li>
 {% endfor %}
 </ul>
 
-<h2 class="mt-4">Add Course</h2>
-<form action="/courses/add" method="post" class="row g-3">
-  <div class="col-md">
-    <input type="text" name="name" placeholder="Name" required class="form-control">
-  </div>
-  <div class="col-md">
-    <input type="number" name="credits" placeholder="Credits" required class="form-control">
-  </div>
-  <div class="col-md">
-    <input type="number" name="teacher_id" placeholder="Teacher ID" class="form-control">
-  </div>
-  <div class="col-md-auto">
-    <button type="submit" class="btn btn-primary">Add</button>
-  </div>
+<h2>Add Course</h2>
+<form action="/courses/add" method="post">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="number" name="credits" placeholder="Credits" required>
+  <input type="text" id="teacher_search" placeholder="Teacher" oninput="filterSelect('teacher_search','teacher_id')">
+  <select name="teacher_id" id="teacher_id">
+    <option value="">-- None --</option>
+    {% for t in teachers %}
+    <option value="{{ t['id'] }}">{{ t['first_name'] }} {{ t['last_name'] }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Add</button>
 </form>
 
-<h2 class="mt-4">Enroll Student</h2>
-<form action="/enroll" method="post" class="row g-3">
-  <div class="col-md">
-    <input type="number" name="student_id" placeholder="Student ID" required class="form-control">
-  </div>
-  <div class="col-md">
-    <input type="number" name="course_id" placeholder="Course ID" required class="form-control">
-  </div>
-  <div class="col-md">
-    <input type="text" name="semester" placeholder="Semester" required class="form-control">
-  </div>
-  <div class="col-md-auto">
-    <button type="submit" class="btn btn-primary">Enroll</button>
-  </div>
+<h2>Enroll Student</h2>
+<form action="/enroll" method="post">
+  <input type="text" id="enroll_student_search" placeholder="Student" oninput="filterSelect('enroll_student_search','student_id')">
+  <select name="student_id" id="student_id" required>
+    {% for s in students %}
+    <option value="{{ s['id'] }}">{{ s['first_name'] }} {{ s['last_name'] }}</option>
+    {% endfor %}
+  </select>
+  <input type="text" id="enroll_course_search" placeholder="Course" oninput="filterSelect('enroll_course_search','course_id')">
+  <select name="course_id" id="course_id" required>
+    {% for c in courses %}
+    <option value="{{ c['id'] }}">{{ c['name'] }}</option>
+    {% endfor %}
+  </select>
+  <input type="text" name="semester" placeholder="Semester" required>
+  <button type="submit">Enroll</button>
+
 </form>
 {% endblock %}

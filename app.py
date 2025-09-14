@@ -152,7 +152,15 @@ async def student_grades(request: Request, student_id: int):
 @app.get("/courses")
 async def get_courses(request: Request):
     courses = svc.list_courses()
-    return templates.TemplateResponse("courses.html", {"request": request, "courses": courses})
+    teachers = svc.list_teachers()
+    students = svc.list_students()
+    context = {
+        "request": request,
+        "courses": courses,
+        "teachers": teachers,
+        "students": students,
+    }
+    return templates.TemplateResponse("courses.html", context)
 
 
 @app.post("/courses/add")
@@ -169,7 +177,16 @@ async def enroll(student_id: int = Form(...), course_id: int = Form(...), semest
 
 @app.get("/progress")
 async def progress(request: Request, student_id: int | None = None, program_id: int | None = None):
-    context = {"request": request, "student_id": student_id, "program_id": program_id}
+
+    students = svc.list_students()
+    programs = svc.list_programs()
+    context = {
+        "request": request,
+        "students": students,
+        "programs": programs,
+        "student_id": student_id,
+        "program_id": program_id,
+    }
     if student_id is not None and program_id is not None:
         passed, remaining, failed = svc.get_student_progress(student_id, program_id)
         context.update({"passed": passed, "remaining": remaining, "failed": failed})

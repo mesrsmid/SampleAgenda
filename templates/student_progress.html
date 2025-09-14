@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Student Progress</h1>
-<form method="get" class="row g-3">
-  <div class="col-md">
-    <input type="number" name="student_id" placeholder="Student ID" value="{{ student_id or '' }}" required class="form-control">
-  </div>
-  <div class="col-md">
-    <input type="number" name="program_id" placeholder="Program ID" value="{{ program_id or '' }}" required class="form-control">
-  </div>
-  <div class="col-md-auto">
-    <button type="submit" class="btn btn-primary">Check</button>
-  </div>
+<form method="get">
+  <input type="text" id="student_search" placeholder="Student" oninput="filterSelect('student_search','student_id')">
+  <select name="student_id" id="student_id" required>
+    {% for s in students %}
+    <option value="{{ s['id'] }}" {% if student_id == s['id'] %}selected{% endif %}>{{ s['first_name'] }} {{ s['last_name'] }}</option>
+    {% endfor %}
+  </select>
+  <input type="text" id="program_search" placeholder="Program" oninput="filterSelect('program_search','program_id')">
+  <select name="program_id" id="program_id" required>
+    {% for p in programs %}
+    <option value="{{ p['id'] }}" {% if program_id == p['id'] %}selected{% endif %}>{{ p['name'] }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Check</button>
 </form>
 
 {% if passed is defined %}
